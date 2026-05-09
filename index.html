@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>WizardPRO</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --accent:#00d4aa;
+  --accent2:#7b61ff;
+  --gray:#8a8a9a;
+  --glass-bg:rgba(255,255,255,0.06);
+  --glass-border:rgba(255,255,255,0.10);
+}
+html,body{width:100%;background:#000;overflow-x:hidden;font-family:'DM Sans',sans-serif;color:#fff}
+.page{display:none;width:100%;min-height:100vh;background:#000}
+.page.active{display:block}
+
+/* ===== HEADER ===== */
+.header{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px;
+  background:linear-gradient(to bottom,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0) 100%);
+  border-bottom:none;
+}
+.hamburger{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:5px;padding:4px 6px 4px 0}
+.hamburger span{display:block;width:22px;height:2px;background:#fff;border-radius:2px}
+.logo-img{height:28px;width:auto;display:block;object-fit:contain;filter:drop-shadow(0 0 6px rgba(123,97,255,0.4))}
+.logo-text{font-family:'Archivo Black',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-0.5px}
+.logo-text span{color:var(--accent)}
+.btn-getstarted{
+  background:var(--accent);color:#000;border:none;
+  padding:9px 20px;border-radius:7px;
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;
+  cursor:pointer;white-space:nowrap;transition:opacity .2s;
+}
+.btn-getstarted:hover{opacity:.85}
+
+/* ===== HERO ===== */
+.hero{
+  position:relative;width:100%;min-height:100vh;background:#000;overflow:hidden;
+}
+.hero-image{
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  width:100%;height:100%;
+  object-fit:cover;
+  object-position:center top;
+  display:block;
+}
+.hero-overlay-top{
+  position:absolute;top:0;left:0;right:0;height:22%;
+  background:linear-gradient(to bottom,rgba(0,0,0,0.65) 0%,transparent 100%);
+  z-index:2;pointer-events:none;
+}
+.hero-overlay-bottom{
+  position:absolute;bottom:0;left:0;right:0;height:52%;
+  background:linear-gradient(to top,#000 0%,#000 18%,rgba(0,0,0,0.85) 40%,rgba(0,0,0,0.5) 65%,transparent 100%);
+  z-index:2;pointer-events:none;
+}
+.hero-overlay-sides{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 110% 100% at 50% 50%,transparent 50%,rgba(0,0,0,0.45) 100%);
+  z-index:2;pointer-events:none;
+}
+.hero-glow{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 70% 50% at 55% 35%, rgba(160,80,255,0.12) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 40% at 30% 55%, rgba(255,60,180,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 75% 60%, rgba(0,212,170,0.06) 0%, transparent 55%);
+  z-index:3;pointer-events:none;
+  animation:ambientPulse 6s ease-in-out infinite alternate;
+}
+@keyframes ambientPulse{
+  0%{opacity:.8}
+  100%{opacity:1}
+}
+.hero-content{
+  position:relative;z-index:4;
+  display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;
+  min-height:100vh;
+  padding:0 28px 56px;
+}
+.hero-headline{
+  font-family:'Archivo Black',sans-serif;
+  font-size:clamp(38px,10.5vw,62px);
+  font-weight:400;line-height:1.05;letter-spacing:-0.5px;
+  color:#fff;margin-bottom:12px;
+  text-shadow:0 2px 32px rgba(0,0,0,0.9),0 1px 8px rgba(0,0,0,0.8);
+}
+.hero-sub{font-size:16px;font-weight:400;color:rgba(255,255,255,.80);margin-bottom:24px;line-height:1.5;text-shadow:0 1px 12px rgba(0,0,0,0.8)}
+.btn-hero-cta{
+  background:#fff;color:#000;border:none;
+  padding:14px 28px;border-radius:8px;
+  font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;
+  cursor:pointer;margin-bottom:10px;transition:opacity .2s;
+}
+.btn-hero-cta:hover{opacity:.9}
+.hero-zero{font-size:12px;color:rgba(255,255,255,.45);text-shadow:0 1px 6px rgba(0,0,0,0.7)}
+
+/* ===== WIDGETS ===== */
+.widgets-section{background:#000;padding:40px 14px 0;}
+.widgets-title{
+  font-family:'Archivo Black',sans-serif;font-size:14px;font-weight:700;
+  color:var(--gray);letter-spacing:.1em;text-transform:uppercase;
+  padding:0 4px;margin-bottom:14px;
+}
+.widgets-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.widget-card{
+  background:rgba(255,255,255,0.055);
+  backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+  border:1px solid rgba(255,255,255,0.09);
+  border-radius:16px;padding:14px 14px 12px;
+  position:relative;overflow:hidden;transition:border-color .2s;
+}
+.widget-card::before{
+  content:'';position:absolute;inset:0;border-radius:16px;
+  background:linear-gradient(135deg,rgba(255,255,255,0.06) 0%,transparent 60%);
+  pointer-events:none;
+}
+.widget-card:hover{border-color:rgba(255,255,255,.18)}
+.w-label{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--gray);margin-bottom:6px}
+.w-val{font-family:'Archivo Black',sans-serif;font-size:18px;font-weight:800;color:#fff;line-height:1;margin-bottom:4px}
+.w-sub{font-size:11px;color:var(--gray);margin-bottom:8px}
+.w-chg{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;padding:3px 8px;border-radius:20px;}
+.w-chg.up{background:rgba(0,200,122,.15);color:#00c87a;border:1px solid rgba(0,200,122,.22)}
+.w-chg.dn{background:rgba(255,71,87,.13);color:#ff4757;border:1px solid rgba(255,71,87,.2)}
+.w-spark{width:100%;height:36px;margin-top:8px;opacity:.7}
+
+/* ===== CHART SECTION ===== */
+.chart-section{background:#000;padding:48px 0 0;}
+.section-label{font-family:'Archivo Black',sans-serif;font-size:clamp(24px,6.5vw,38px);font-weight:800;color:#fff;padding:0 24px;margin-bottom:6px;line-height:1.15;}
+.section-sub{font-size:14px;color:rgba(255,255,255,.42);padding:0 24px;margin-bottom:20px}
+.chart-img-wrap{
+  position:relative;width:100%;overflow:hidden;
+  min-height:280px;
+}
+.trading-desk-img{
+  width:100%;
+  display:block;
+  object-fit:cover;
+  min-height:280px;
+  max-height:340px;
+  filter:grayscale(25%) contrast(1.1) brightness(0.85);
+}
+.chart-img-wrap::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:35%;
+  background:linear-gradient(to bottom,#000 0%,transparent 100%);
+  z-index:3;pointer-events:none;
+}
+.chart-img-wrap::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:45%;
+  background:linear-gradient(to top,#000 0%,transparent 100%);
+  z-index:3;pointer-events:none;
+}
+.chart-side-vignette{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 120% 100% at 50% 50%,transparent 45%,rgba(0,0,0,0.55) 100%);
+  z-index:4;pointer-events:none;
+}
+.btn-explore{
+  display:block;margin:22px auto 0;
+  background:transparent;color:#fff;
+  border:1px solid rgba(255,255,255,.28);
+  padding:13px 36px;border-radius:8px;
+  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;
+  cursor:pointer;transition:border-color .2s,background .2s;
+}
+.btn-explore:hover{border-color:var(--accent);background:rgba(0,212,170,.07)}
+
+/* ===== GAME PLAN ===== */
+.gameplan-section{padding:48px 14px 0}
+.gameplan-pill{
+  background:rgba(255,255,255,.055);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:20px;overflow:hidden;
+}
+.gp-top{
+  background:linear-gradient(135deg,rgba(123,97,255,.18),rgba(0,212,170,.08));
+  padding:20px 18px 16px;border-bottom:1px solid rgba(255,255,255,.07);
+}
+.gp-date{font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--gray);text-transform:uppercase;margin-bottom:8px}
+.gp-title{font-family:'Archivo Black',sans-serif;font-size:22px;font-weight:800;color:#fff;line-height:1.2;margin-bottom:10px}
+.gp-body{font-size:13px;color:rgba(255,255,255,.62);line-height:1.65;margin-bottom:14px}
+.gp-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(0,200,122,.14);border:1px solid rgba(0,200,122,.28);color:#00c87a;font-size:11px;font-weight:700;letter-spacing:.07em;padding:5px 14px;border-radius:20px;}
+.gp-badge::before{content:'●';font-size:8px}
+.gp-zone{padding:18px 18px 14px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:space-between;}
+.gp-zone-label{font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--gray);text-transform:uppercase}
+.gp-zone-val{font-family:'Archivo Black',sans-serif;font-size:32px;font-weight:800;color:#fff}
+.gp-scenarios{padding:14px 18px 16px;display:flex;flex-direction:column;gap:10px}
+.gp-bull{background:rgba(0,200,122,.1);border:1px solid rgba(0,200,122,.2);border-radius:12px;padding:12px 14px;display:flex;align-items:flex-start;gap:10px;}
+.gp-bear{background:rgba(255,71,87,.08);border:1px solid rgba(255,71,87,.18);border-radius:12px;padding:12px 14px;display:flex;align-items:flex-start;gap:10px;}
+.gp-icon{font-size:15px;margin-top:1px;flex-shrink:0}
+.gp-scenario-text{font-size:13px;color:rgba(255,255,255,.82);line-height:1.55}
+.gp-exec{margin:0 18px 18px;background:rgba(255,140,0,.08);border-left:3px solid #ffa502;border-radius:0 10px 10px 0;padding:12px 14px;font-size:13px;color:rgba(255,255,255,.7);line-height:1.6;}
+
+/* ===== MARKET DATA ===== */
+.market-section{padding:44px 14px 20px;background:#000}
+.mkt-section-title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);padding:0 4px;margin-bottom:12px}
+.glass-card{background:var(--glass-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:16px;overflow:hidden;margin-bottom:12px;}
+.card-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px 10px;border-bottom:1px solid rgba(255,255,255,.06)}
+.card-head h3{font-size:11px;font-weight:600;color:var(--gray);letter-spacing:.07em;text-transform:uppercase}
+.badge{background:rgba(0,200,122,.14);color:#00c87a;font-size:9px;font-weight:700;letter-spacing:.08em;padding:2px 7px;border-radius:20px;border:1px solid rgba(0,200,122,.28)}
+.mkt-row{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-bottom:1px solid rgba(255,255,255,.04)}
+.mkt-row:last-child{border-bottom:none}
+.mkt-name{font-size:14px;font-weight:500;color:rgba(255,255,255,.88)}
+.mkt-right{display:flex;flex-direction:column;align-items:flex-end;gap:1px}
+.mkt-val{font-size:14px;font-weight:500;color:#fff}
+.mkt-chg{font-size:12px;font-weight:600}
+.up{color:#00c87a}.dn{color:#ff4757}
+.mood-inner{padding:14px 16px}
+.mood-bar{height:6px;border-radius:3px;background:linear-gradient(to right,#ff4757,#ffa502,#00c87a);position:relative;margin-bottom:8px}
+.mood-dot{position:absolute;top:50%;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;background:#fff;box-shadow:0 0 0 2px rgba(0,0,0,.5)}
+.mood-legends{display:flex;justify-content:space-between;font-size:10px;color:var(--gray);margin-bottom:10px}
+.mood-val{font-size:18px;font-weight:700;color:var(--accent)}
+.sector-inner{padding:12px 16px}
+.sec-row{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.sec-row:last-child{margin-bottom:0}
+.sec-name{font-size:13px;font-weight:500;color:rgba(255,255,255,.84);min-width:72px}
+.sec-track{flex:1;height:4px;background:rgba(255,255,255,.09);border-radius:2px;overflow:hidden}
+.sec-bar{height:100%;border-radius:2px}
+.sec-pct{font-size:12px;font-weight:600;min-width:46px;text-align:right}
+.wl-row{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.04)}
+.wl-row:last-child{border-bottom:none}
+.wl-name{font-size:13px;font-weight:600;color:#fff}
+.wl-tick{font-size:11px;color:var(--gray);margin-top:1px}
+.wl-price{font-size:14px;font-weight:500;color:#fff;text-align:right}
+.wl-chg{font-size:12px;font-weight:600;text-align:right}
+.mkt-note{font-size:10px;color:rgba(255,255,255,.22);text-align:center;padding-top:6px}
+
+/* ===== FOOTER ===== */
+.site-footer{background:#000;border-top:1px solid rgba(255,255,255,.07);padding:28px 20px 40px;display:flex;flex-direction:column;align-items:center;gap:14px;}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.28);letter-spacing:.04em;text-align:center}
+.back-top{display:block;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.55);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;padding:10px 24px;border-radius:30px;cursor:pointer;transition:background .2s,color .2s;letter-spacing:.04em;}
+.back-top:hover{background:rgba(255,255,255,.12);color:#fff}
+
+/* ===== SUBSCRIPTION PAGE ===== */
+#page-sub{padding-bottom:60px}
+.sub-topbar{display:flex;align-items:center;justify-content:space-between;padding:18px 18px 10px;position:sticky;top:0;background:#000;z-index:50;}
+.back-btn{background:none;border:none;color:#fff;font-size:22px;cursor:pointer;padding:4px 8px 4px 0;line-height:1}
+.sub-hero{padding:28px 24px 24px;text-align:center}
+.sub-headline{font-family:'Archivo Black',sans-serif;font-size:clamp(28px,8vw,42px);font-weight:800;color:#fff;line-height:1.1;margin-bottom:12px}
+.sub-desc{font-size:14px;color:rgba(255,255,255,.5);line-height:1.65;max-width:310px;margin:0 auto}
+.free-pill{margin:8px 18px 26px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:26px 22px 22px;text-align:center;}
+.free-big{font-family:'Archivo Black',sans-serif;font-size:58px;font-weight:800;color:#fff;line-height:1;margin-bottom:4px}
+.free-sub{font-size:13px;color:var(--gray);margin-bottom:22px}
+.btn-signup-pill{width:100%;background:var(--accent);color:#000;border:none;padding:15px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .2s;margin-bottom:8px;}
+.btn-signup-pill:hover{opacity:.85}
+.free-note{font-size:11px;color:var(--gray)}
+.plans-header{font-family:'Archivo Black',sans-serif;font-size:22px;font-weight:800;color:#fff;padding:8px 18px 6px}
+.billing-toggle{display:flex;align-items:center;gap:16px;padding:0 18px 18px;}
+.billing-toggle label{font-size:14px;font-weight:500;color:rgba(255,255,255,.65);cursor:pointer;display:flex;align-items:center;gap:6px}
+.billing-toggle input[type=radio]{accent-color:var(--accent);width:15px;height:15px}
+.plan-card{margin:0 14px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:22px 18px 18px;}
+.plan-card.featured{border-color:var(--accent);background:rgba(0,212,170,.04)}
+.plan-name{font-size:15px;font-weight:700;color:#fff;margin-bottom:8px}
+.plan-price-big{font-family:'Archivo Black',sans-serif;font-size:40px;font-weight:800;color:#fff;line-height:1}
+.plan-per{font-size:15px;font-weight:400;color:var(--gray)}
+.plan-billing-note{font-size:12px;color:var(--gray);margin:4px 0 20px}
+.btn-try{width:100%;background:#fff;color:#000;border:none;padding:13px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:6px;transition:opacity .2s;}
+.btn-try:hover{opacity:.88}
+.plan-skip-note{font-size:11px;color:var(--gray);text-align:center;margin-bottom:18px}
+.plan-skip-note a{color:var(--accent);text-decoration:none}
+.feat-list{list-style:none}
+.feat-list li{font-size:13px;color:rgba(255,255,255,.8);padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;gap:8px;}
+.feat-list li:last-child{border-bottom:none}
+.feat-list li::before{content:'✓';color:var(--accent);font-weight:700;font-size:12px;flex-shrink:0}
+
+/* ===== SIGN-IN PAGE ===== */
+#page-signin{background:#000;display:none;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:48px 24px;position:relative}
+#page-signin.active{display:flex}
+.si-brand{font-family:'Archivo Black',sans-serif;font-size:28px;font-weight:800;color:#fff;margin-bottom:8px;text-align:center}
+.si-brand span{color:var(--accent)}
+.si-tagline{font-size:13px;color:var(--gray);margin-bottom:38px;text-align:center}
+.si-title{font-family:'Archivo Black',sans-serif;font-size:30px;font-weight:800;color:#fff;margin-bottom:30px;text-align:center}
+.si-box{width:100%;max-width:360px}
+.btn-google{width:100%;background:#fff;color:#1a1a1a;border:none;padding:14px 18px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px;transition:opacity .2s;}
+.btn-google:hover{opacity:.9}
+.btn-more{width:100%;background:none;border:none;color:var(--accent);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;text-align:center;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:4px;}
+.si-or{text-align:center;color:var(--gray);font-size:13px;margin-bottom:14px;position:relative;padding:0 60px;}
+.si-or::before,.si-or::after{content:'';position:absolute;top:50%;width:35%;height:1px;background:rgba(255,255,255,.12)}
+.si-or::before{left:0}.si-or::after{right:0}
+.btn-email{width:100%;background:rgba(255,255,255,.07);color:#fff;border:1px solid rgba(255,255,255,.14);padding:14px 18px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:background .2s;}
+.btn-email:hover{background:rgba(255,255,255,.12)}
+.si-footer{text-align:center;font-size:13px;color:var(--gray);margin-top:40px}
+.si-footer a{color:var(--accent);text-decoration:none;font-weight:500}
+.si-back{position:absolute;top:18px;left:16px;background:none;border:none;color:#fff;font-size:22px;cursor:pointer;line-height:1}
+</style>
+</head>
+<body>
+<!-- ====================================================== HOME ====================================================== -->
+<div class="page active" id="page-home">
+
+  <header class="header">
+    <div style="display:flex;align-items:center;gap:12px">
+      <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+      <img
+        class="logo-img"
+        src="https://res.cloudinary.com/dxmuistk4/image/upload/f_auto,q_auto/v1778309076/file_00000000f16071f8a390927a87aa7418_pqzhqz.png"
+        alt="WizardPRO"
+        onerror="this.style.display='none';document.getElementById('logo-fallback').style.display='block'"
+      >
+      <div class="logo-text" id="logo-fallback" style="display:none">Wizard<span>PRO</span></div>
+    </div>
+    <button class="btn-getstarted" onclick="showPage('page-sub')">Get started</button>
+  </header>
+
+  <section class="hero">
+    <img
+      class="hero-image"
+      src="https://res.cloudinary.com/dxmuistk4/image/upload/f_auto,q_auto/v1778309002/file_00000000ba3871fa9ab3febd7c15f612_cz2sev.png"
+      alt="WizardPRO Hero"
+    >
+    <div class="hero-overlay-top"></div>
+    <div class="hero-overlay-sides"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-overlay-bottom"></div>
+    <div class="hero-content">
+      <h1 class="hero-headline">Know deep /<br>Trade smarter</h1>
+      <p class="hero-sub">Your expert analyst on the go.</p>
+      <button class="btn-hero-cta" onclick="showPage('page-sub')">Get started for free</button>
+      <span class="hero-zero">₹0 forever, no credit card needed.</span>
+    </div>
+  </section>
+
+  <!-- KEY INDICES -->
+  <div class="widgets-section">
+    <p class="widgets-title">Key indices</p>
+    <div class="widgets-grid">
+      <div class="widget-card">
+        <div class="w-label">Nifty 50</div>
+        <div class="w-val">24,176</div>
+        <div class="w-sub">NSE · India</div>
+        <span class="w-chg dn">▼ 0.62%</span>
+        <canvas class="w-spark" id="sp-nifty"></canvas>
+      </div>
+      <div class="widget-card">
+        <div class="w-label">Bank Nifty</div>
+        <div class="w-val">52,114</div>
+        <div class="w-sub">NSE · India</div>
+        <span class="w-chg up">▲ 0.28%</span>
+        <canvas class="w-spark" id="sp-bnifty"></canvas>
+      </div>
+      <div class="widget-card">
+        <div class="w-label">SGX Nifty</div>
+        <div class="w-val">24,162</div>
+        <div class="w-sub">SGX · Singapore</div>
+        <span class="w-chg up">▲ 0.22%</span>
+        <canvas class="w-spark" id="sp-sgx"></canvas>
+      </div>
+      <div class="widget-card">
+        <div class="w-label">Nikkei 225</div>
+        <div class="w-val">35,892</div>
+        <div class="w-sub">TSE · Japan</div>
+        <span class="w-chg dn">▼ 0.32%</span>
+        <canvas class="w-spark" id="sp-nikkei"></canvas>
+      </div>
+      <div class="widget-card">
+        <div class="w-label">S&amp;P 500</div>
+        <div class="w-val">5,842</div>
+        <div class="w-sub">NYSE · USA</div>
+        <span class="w-chg up">▲ 0.54%</span>
+        <canvas class="w-spark" id="sp-sp500"></canvas>
+      </div>
+      <div class="widget-card">
+        <div class="w-label">NASDAQ</div>
+        <div class="w-val">18,448</div>
+        <div class="w-sub">NASDAQ · USA</div>
+        <span class="w-chg up">▲ 0.91%</span>
+        <canvas class="w-spark" id="sp-nasdaq"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRADING DESK SECTION -->
+  <div class="chart-section">
+    <h2 class="section-label">Where the world<br>practice trading</h2>
+    <p class="section-sub">Join thousands of traders mastering the markets.</p>
+    <div class="chart-img-wrap">
+      <img
+        class="trading-desk-img"
+        src="https://res.cloudinary.com/dxmuistk4/image/upload/f_auto,q_auto/v1778309136/stock-1863880_wifiz0.jpg"
+        alt="Trading desk"
+      >
+      <div class="chart-side-vignette"></div>
+    </div>
+    <div style="padding:0 24px 48px;text-align:center">
+      <button class="btn-explore" onclick="showPage('page-sub')">Explore features</button>
+    </div>
+  </div>
+
+  <!-- GAME PLAN -->
+  <div class="gameplan-section">
+    <p class="mkt-section-title" style="padding:0 4px;margin-bottom:12px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gray)">Opening game plan</p>
+    <div class="gameplan-pill">
+      <div class="gp-top">
+        <div class="gp-date">Saturday, 9 May 2026</div>
+        <div class="gp-title">Opening Game Plan · Bullish Bias Above Pivot</div>
+        <div class="gp-body">Use the daily report as a decision framework, not a prediction sheet. The plan below combines overnight cues, levels, sector leadership, flows, and trade execution guardrails.</div>
+        <span class="gp-badge">HIGH FOCUS SESSION</span>
+      </div>
+      <div class="gp-zone">
+        <span class="gp-zone-label">Nifty Decision Zone</span>
+        <span class="gp-zone-val">24,148</span>
+      </div>
+      <div class="gp-scenarios">
+        <div class="gp-bull">
+          <span class="gp-icon">✓</span>
+          <span class="gp-scenario-text">If price accepts above pivot, watch 24,285 then 24,421 with IT and OMC leadership.</span>
+        </div>
+        <div class="gp-bear">
+          <span class="gp-icon">✗</span>
+          <span class="gp-scenario-text">If the gap fails under 24,011, expect pullback toward 23,875 and tighten intraday risk fast.</span>
+        </div>
+      </div>
+      <div class="gp-exec">Execution note: let the first 15-minute candle complete, then trade the side that shows acceptance with sector breadth and order-flow confirmation.</div>
+    </div>
+  </div>
+
+  <!-- MARKET SUMMARY -->
+  <div class="market-section" style="padding-top:44px">
+    <p class="mkt-section-title">Market summary</p>
+    <div class="glass-card">
+      <div class="card-head"><h3>Indian Indices</h3><span class="badge">LIVE</span></div>
+      <div class="mkt-row"><span class="mkt-name">Nifty 50</span><div class="mkt-right"><span class="mkt-val">24,176.15</span><span class="mkt-chg dn">−0.62%</span></div></div>
+      <div class="mkt-row"><span class="mkt-name">Sensex</span><div class="mkt-right"><span class="mkt-val">77,328.19</span><span class="mkt-chg dn">−0.66%</span></div></div>
+      <div class="mkt-row"><span class="mkt-name">Bank Nifty</span><div class="mkt-right"><span class="mkt-val">52,114.80</span><span class="mkt-chg up">+0.28%</span></div></div>
+      <div class="mkt-row"><span class="mkt-name">India VIX</span><div class="mkt-right"><span class="mkt-val">13.42</span><span class="mkt-chg dn">−5.76%</span></div></div>
+    </div>
+    <div class="glass-card">
+      <div class="card-head"><h3>Global Markets</h3></div>
+      <div class="mkt-row"><span class="mkt-name">S&amp;P 500</span><div class="mkt-right"><span class="mkt-val">5,842.00</span><span class="mkt-chg up">+0.54%</span></div></div>
+      <div class="mkt-row"><span class="mkt-name">NASDAQ</span><div class="mkt-right"><span class="mkt-val">18,448.00</span><span class="mkt-chg up">+0.91%</span></div></div>
+      <div class="mkt-row"><span class="mkt-name">Dow Jones</span><div class="mkt-right"><span class="mkt-val">41,249.38</span><span class="mkt-chg dn">−0.07%</span></div></div>
+      <div class="mkt-row"><span class="mkt-name">Nikkei 225</span><div class="mkt-right"><span class="mkt-val">35,892.00</span><span class="mkt-chg dn">−0.32%</span></div></div>
+      <div class="mkt-row"><span class="mkt-name">Hang Seng</span><div class="mkt-right"><span class="mkt-val">24,312.00</span><span class="mkt-chg dn">−0.78%</span></div></div>
+      <div class="mkt-row"><span class="mkt-name">SGX Nifty</span><div class="mkt-right"><span class="mkt-val">24,162.00</span><span class="mkt-chg up">+0.22%</span></div></div>
+    </div>
+    <div class="glass-card">
+      <div class="card-head"><h3>Global Cues</h3></div>
+      <div class="mkt-row"><span class="mkt-name">Crude Oil</span><div class="mkt-right"><span class="mkt-val">$61.84</span><span class="mkt-chg dn">−1.24%</span></div></div>
+      <div class="mkt-row"><span class="mkt-name">USD / INR</span><div class="mkt-right"><span class="mkt-val">84.12</span><span class="mkt-chg dn">−0.08%</span></div></div>
+    </div>
+    <div class="glass-card">
+      <div class="card-head"><h3>Market Mood — Fear &amp; Greed</h3></div>
+      <div class="mood-inner">
+        <div class="mood-bar"><div class="mood-dot" style="left:62%"></div></div>
+        <div class="mood-legends"><span>Extreme Fear</span><span>Neutral</span><span>Extreme Greed</span></div>
+        <span class="mood-val">62 — Greed</span>
+      </div>
+    </div>
+    <div class="glass-card">
+      <div class="card-head"><h3>Sector Performance — Today</h3></div>
+      <div class="sector-inner">
+        <div class="sec-row"><span class="sec-name">IT / Tech</span><div class="sec-track"><div class="sec-bar" style="width:75%;background:#00c87a"></div></div><span class="sec-pct up">+1.82%</span></div>
+        <div class="sec-row"><span class="sec-name">FMCG</span><div class="sec-track"><div class="sec-bar" style="width:50%;background:#00c87a"></div></div><span class="sec-pct up">+0.94%</span></div>
+        <div class="sec-row"><span class="sec-name">Pharma</span><div class="sec-track"><div class="sec-bar" style="width:40%;background:#00c87a"></div></div><span class="sec-pct up">+0.71%</span></div>
+        <div class="sec-row"><span class="sec-name">Banking</span><div class="sec-track"><div class="sec-bar" style="width:28%;background:#00c87a"></div></div><span class="sec-pct up">+0.52%</span></div>
+        <div class="sec-row"><span class="sec-name">Auto</span><div class="sec-track"><div class="sec-bar" style="width:24%;background:#ff4757"></div></div><span class="sec-pct dn">−0.44%</span></div>
+        <div class="sec-row"><span class="sec-name">Metals</span><div class="sec-track"><div class="sec-bar" style="width:58%;background:#ff4757"></div></div><span class="sec-pct dn">−1.14%</span></div>
+        <div class="sec-row"><span class="sec-name">Realty</span><div class="sec-track"><div class="sec-bar" style="width:72%;background:#ff4757"></div></div><span class="sec-pct dn">−1.56%</span></div>
+      </div>
+    </div>
+    <div class="glass-card">
+      <div class="card-head"><h3>Watchlist Radar</h3></div>
+      <div class="wl-row"><div><div class="wl-name">HAL</div><div class="wl-tick">Hindustan Aeronautics</div></div><div><div class="wl-price">₹4,280.60</div><div class="wl-chg up">+4.82%</div></div></div>
+      <div class="wl-row"><div><div class="wl-name">TCS</div><div class="wl-tick">Tata Consultancy</div></div><div><div class="wl-price">₹282.39</div><div class="wl-chg dn">−3.48%</div></div></div>
+      <div class="wl-row"><div><div class="wl-name">BEL</div><div class="wl-tick">Bharat Electronics</div></div><div><div class="wl-price">₹284.30</div><div class="wl-chg up">+3.44%</div></div></div>
+      <div class="wl-row"><div><div class="wl-name">MARUTI</div><div class="wl-tick">Maruti Suzuki</div></div><div><div class="wl-price">₹2,072.08</div><div class="wl-chg up">+3.42%</div></div></div>
+      <div class="wl-row"><div><div class="wl-name">BHARTIARTL</div><div class="wl-tick">Bharti Airtel</div></div><div><div class="wl-price">₹833.74</div><div class="wl-chg dn">−2.97%</div></div></div>
+      <div class="wl-row"><div><div class="wl-name">HDFCBANK</div><div class="wl-tick">HDFC Bank</div></div><div><div class="wl-price">₹1,183.14</div><div class="wl-chg dn">−2.47%</div></div></div>
+      <div class="wl-row"><div><div class="wl-name">BAJFINANCE</div><div class="wl-tick">Bajaj Finance</div></div><div><div class="wl-price">₹2,258.75</div><div class="wl-chg up">+2.28%</div></div></div>
+      <div class="wl-row"><div><div class="wl-name">SBIN</div><div class="wl-tick">State Bank of India</div></div><div><div class="wl-price">₹207.30</div><div class="wl-chg dn">−2.23%</div></div></div>
+    </div>
+    <p class="mkt-note">Demo data only. Live API integration coming soon.</p>
+  </div>
+
+  <footer class="site-footer">
+    <button class="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Back to top</button>
+    <div class="logo-text" style="opacity:.4;font-size:16px">Wizard<span>PRO</span></div>
+    <p class="footer-copy">© 2026 OpenFi.Ltd · All rights reserved</p>
+  </footer>
+</div>
+
+<!-- ====================================================== SUBSCRIPTION ====================================================== -->
+<div class="page" id="page-sub">
+  <div class="sub-topbar">
+    <button class="back-btn" onclick="showPage('page-home')">&#8592;</button>
+    <div class="logo-text">Wizard<span>PRO</span></div>
+    <div style="width:40px"></div>
+  </div>
+  <div class="sub-hero">
+    <h1 class="sub-headline">Free, until you're ready</h1>
+    <p class="sub-desc">Practice, analyse, then implement. Leap on to the platform used by many.</p>
+  </div>
+  <div class="free-pill">
+    <div class="free-big">₹0</div>
+    <div class="free-sub">forever</div>
+    <button class="btn-signup-pill" onclick="showPage('page-signin')">Sign up</button>
+    <p class="free-note">No credit card needed</p>
+  </div>
+  <div class="plans-header">Plans for every<br>level of ambition</div>
+  <div class="billing-toggle">
+    <label><input type="radio" name="billing" value="monthly"> Monthly</label>
+    <label><input type="radio" name="billing" value="annually" checked> Annually</label>
+  </div>
+  <div class="plan-card">
+    <div class="plan-name">Essential</div>
+    <div><span class="plan-price-big">₹199</span><span class="plan-per">/mo</span></div>
+    <div class="plan-billing-note">billed annually</div>
+    <button class="btn-try" onclick="showPage('page-signin')">Try free for 30 days</button>
+    <p class="plan-skip-note">or skip trial and <a href="#" onclick="showPage('page-signin');return false;">pay now</a></p>
+    <ul class="feat-list">
+      <li>Premium paper trading lab</li>
+      <li>Community access</li>
+      <li>Daily pre-market report</li>
+      <li>News</li>
+    </ul>
+  </div>
+  <div class="plan-card featured">
+    <div class="plan-name">Premium</div>
+    <div><span class="plan-price-big">₹399</span><span class="plan-per">/mo</span></div>
+    <div class="plan-billing-note">billed annually</div>
+    <button class="btn-try" onclick="showPage('page-signin')">Try free for 30 days</button>
+    <p class="plan-skip-note">or skip trial and <a href="#" onclick="showPage('page-signin');return false;">pay now</a></p>
+    <ul class="feat-list">
+      <li>Premium paper trading lab</li>
+      <li>Community access</li>
+      <li>Daily pre-market report</li>
+      <li>News</li>
+      <li>Fundamental analysis tool</li>
+      <li>Alert setting</li>
+      <li>Copy trading</li>
+      <li>Position sizing calculator</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ====================================================== SIGN IN ====================================================== -->
+<div class="page" id="page-signin" style="position:relative">
+  <button class="si-back" onclick="showPage('page-sub')">&#8592;</button>
+  <div style="display:flex;flex-direction:column;align-items:center;padding:70px 24px 48px;min-height:100vh;justify-content:center">
+    <div class="si-brand">Wizard<span>PRO</span></div>
+    <div class="si-tagline">Your expert analyst on the go</div>
+    <h2 class="si-title">Sign up</h2>
+    <div class="si-box">
+      <button class="btn-google">
+        <svg width="20" height="20" viewBox="0 0 48 48">
+          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+        </svg>
+        Continue with Google
+      </button>
+      <button class="btn-more">Show more options &#x2304;</button>
+      <div class="si-or">or</div>
+      <button class="btn-email">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        Continue with Email
+      </button>
+    </div>
+    <div class="si-footer">Already have an account? <a href="#">Sign in</a></div>
+  </div>
+</div>
+
+<script>
+/* ===== PAGE ROUTING ===== */
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+  var t = document.getElementById(id);
+  if (t) { t.classList.add('active'); window.scrollTo(0,0); }
+}
+
+/* ===== SPARKLINES ===== */
+function drawSparkline(canvasId, isUp) {
+  var c = document.getElementById(canvasId);
+  if (!c) return;
+  var dpr = window.devicePixelRatio || 1;
+  var w = c.offsetWidth, h = c.offsetHeight || 36;
+  c.width = w * dpr; c.height = h * dpr;
+  var ctx = c.getContext('2d');
+  ctx.scale(dpr, dpr);
+  var pts = [0.5];
+  for (var i = 1; i < 28; i++) {
+    var delta = (Math.random() - (isUp ? 0.45 : 0.55)) * 0.12;
+    pts.push(Math.max(0.05, Math.min(0.95, pts[i-1] + delta)));
+  }
+  var min = Math.min.apply(null, pts), max = Math.max.apply(null, pts);
+  var range = max - min || 0.1;
+  var color = isUp ? '#00c87a' : '#ff4757';
+  var grad = ctx.createLinearGradient(0,0,0,h);
+  grad.addColorStop(0, isUp ? 'rgba(0,200,122,0.25)' : 'rgba(255,71,87,0.2)');
+  grad.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.beginPath();
+  pts.forEach(function(v,i) {
+    var x = (i/(pts.length-1))*w;
+    var y = h - ((v-min)/range)*(h*0.85) - h*0.05;
+    i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  });
+  ctx.lineTo(w,h); ctx.lineTo(0,h); ctx.closePath();
+  ctx.fillStyle = grad; ctx.fill();
+  ctx.beginPath();
+  pts.forEach(function(v,i) {
+    var x = (i/(pts.length-1))*w;
+    var y = h - ((v-min)/range)*(h*0.85) - h*0.05;
+    i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  });
+  ctx.strokeStyle = color; ctx.lineWidth = 1.5;
+  ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  ctx.stroke();
+}
+
+window.addEventListener('load', function() {
+  drawSparkline('sp-nifty',  false);
+  drawSparkline('sp-bnifty', true);
+  drawSparkline('sp-sgx',    true);
+  drawSparkline('sp-nikkei', false);
+  drawSparkline('sp-sp500',  true);
+  drawSparkline('sp-nasdaq', true);
+});
+</script>
+</body>
+</html>
